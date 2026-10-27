@@ -7,33 +7,27 @@ export const AddItem = () => {
     const {products, setProducts} = useContext(CartContext);
     const [visible, setVisible] = useState(false);
     const [image, setImage] = useState(null);
-    const [product, setProduct] = useState({ name: "", description: "", src: null, quantity: 1, id: 0});
+    const [product, setProduct] = useState({ name: "", description: "", src: null, quantity: 1, id: Date.now()});
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-                setProduct({ ...product, src: reader.result });
-            };
-            reader.readAsDataURL(file);
+            console.log(file);
+            console.log(URL.createObjectURL(file));
+            setImage(URL.createObjectURL(file));
+            setProduct({ ...product, src: URL.createObjectURL(file) })
         }
     };
 
     const agregarEquipo = (e) => {
         e.preventDefault();
-        const nuevoProducto = {
-            ...product,
-            id: products.length + 1
-        };
-        const copyProducts = [...products, nuevoProducto];
-        setProducts(copyProducts);
+        const copyProducts = [...products, product]
+        setProducts(copyProducts)
         setProduct({
-            name: "", description: "", src: null, quantity: 1, id: 0
-        });
-        setImage(null);
-    };
+            name: "", description: "", src: null, quantity: 1, id: Date.now()
+        })
+        setImage(null)
+    }
     
     return (
         <div className='w-screen flex justify-center'>
